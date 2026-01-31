@@ -28,21 +28,26 @@ export default function DownloaderWrapper() {
     } finally { setLoading(false); }
   };
 
-  const downloadFile = async (fileUrl, fileName) => {
-    setDownloading(true);
-    try {
-      const res = await fetch(fileUrl);
-      const blob = await res.blob();
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (err) {
-      window.open(fileUrl, "_blank");
-    } finally { setDownloading(false); }
-  };
+const downloadFile = async (fileUrl, fileName) => {
+  setDownloading(true);
+  try {
+    const res = await fetch(fileUrl);
+    const blob = await res.blob();
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName;
+    a.click();
+
+    URL.revokeObjectURL(url);
+  } catch {
+    window.open(fileUrl, "_blank"); // iOS fallback
+  } finally {
+    setDownloading(false);
+  }
+};
+
 
   return (
     <>
