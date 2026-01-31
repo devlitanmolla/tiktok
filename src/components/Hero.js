@@ -43,7 +43,7 @@ export default function Hero({ url, setUrl, handleFetch, loading }) {
             {loading ? (
               <RefreshCcw className="animate-spin" size={18} />
             ) : (
-              "DOWNLOAD"
+              "Get Video"
             )}
           </button>
         </div>
